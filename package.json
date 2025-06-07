@@ -1,0 +1,90 @@
+{
+  "name": "drizzle-transactional",
+  "version": "1.1.0",
+  "description": "Beautiful transactional decorator for Drizzle ORM with all capabilities from typeorm-transactional",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "types": "./dist/types/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "npm run clean && npm run build:esm && npm run build:cjs && npm run build:types",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "build:cjs": "tsc -p tsconfig.cjs.json && mkdir -p dist/cjs && echo '{\"type\":\"commonjs\"}' > dist/cjs/package.json",
+    "build:types": "tsc -p tsconfig.types.json",
+    "test": "npm run test:docker",
+    "test:docker": "npm run db:start && npm run build && npm run test:wait && npm run test:compiled && npm run db:stop",
+    "test:compiled": "npx tsx --tsconfig tsconfig.tests.json tests/comprehensive-test.ts",
+    "test:local": "npm run build && npm run test:compiled",
+    "db:start": "docker-compose -f docker-compose.test.yml up -d postgres-test",
+    "db:stop": "docker-compose -f docker-compose.test.yml down",
+    "db:clean": "docker-compose -f docker-compose.test.yml down -v",
+    "db:logs": "docker-compose -f docker-compose.test.yml logs -f postgres-test",
+    "db:wait": "npm run test:wait",
+    "test:wait": "npx wait-on tcp:localhost:5433 --timeout 30000",
+    "example": "npx tsx --tsconfig tsconfig.examples.json examples/usage-example.ts",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run clean && npm run build && npm run test:local"
+  },
+  "keywords": [
+    "drizzle",
+    "drizzle-orm",
+    "transaction",
+    "transactional",
+    "decorator",
+    "typescript",
+    "orm",
+    "database",
+    "postgres",
+    "postgresql",
+    "sql",
+    "isolation",
+    "propagation",
+    "async-local-storage",
+    "context",
+    "hooks"
+  ],
+  "author": {
+    "name": "herenickname",
+    "url": "https://github.com/herenickname"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/herenickname/drizzle-transactional.git"
+  },
+  "bugs": {
+    "url": "https://github.com/herenickname/drizzle-transactional/issues"
+  },
+  "homepage": "https://github.com/herenickname/drizzle-transactional#readme",
+  "dependencies": {
+    "drizzle-orm": "^0.36.4",
+    "reflect-metadata": "^0.2.2",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/pg": "^8.11.10",
+    "pg": "^8.13.1",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "undici-types": "^7.10.0",
+    "wait-on": "^8.0.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

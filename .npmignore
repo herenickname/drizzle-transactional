@@ -1,0 +1,60 @@
+# Source files (only publish built files)
+src/
+tsconfig*.json
+
+# Documentation files (keep only README and LICENSE)
+docs/
+PROJECT-*.md
+SOLUTION-REPORT.md
+TESTING-EXPLANATION.md
+ISOLATION-*.md
+README-COMPLETE.md
+
+# Development files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Testing and coverage
+coverage/
+.nyc_output/
+.jest/
+
+# Temporary files
+.tmp/
+temp/
+
+# Git
+.git/
+.gitignore
+
+# CI/CD
+.github/
+.travis.yml
+.circleci/
+
+# Package manager files
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+.pnpm-store/
+
+# TypeScript build info
+*.tsbuildinfo

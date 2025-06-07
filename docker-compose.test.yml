@@ -1,0 +1,28 @@
+services:
+  postgres-test:
+    image: postgres:15-alpine
+    container_name: drizzle-transactional-test-db
+    environment:
+      POSTGRES_DB: test_db
+      POSTGRES_USER: test_user
+      POSTGRES_PASSWORD: test_password
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5433:5432" # Use different port to avoid conflicts
+    volumes:
+      - postgres_test_data:/var/lib/postgresql/data
+      - ./tests/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U test_user -d test_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    command: >
+      postgres
+      -c log_statement=all
+      -c log_min_duration_statement=0
+      -c max_connections=200
+      -c shared_preload_libraries=''
+
+volumes:
+  postgres_test_data:
